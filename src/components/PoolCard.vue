@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card
-      :title="name"
+      :title="Name"
       img-src="https://picsum.photos/600/300/?image=25"
       img-alt="Image"
       img-top
@@ -10,10 +10,13 @@
       class="mb-2"
     >
       <b-card-text>
-        {{ description }}
+        <b-form-rating v-model="Rating" readonly></b-form-rating>
       </b-card-text>
 
-      <b-button :disabled="isPrivate" href="#" variant="primary"
+      <b-button
+        :disabled="IsPublic != 1"
+        :href="'#/answerPool/' + ID"
+        variant="primary"
         >Pildyti</b-button
       >
     </b-card>
@@ -24,17 +27,19 @@
 export default {
   name: "PoolCard",
   props: {
-    name: {
+    ID: {
+      type: Number,
+      required: true,
+    },
+    IsPublic: {
+      type: Number,
+    },
+    Name: {
       type: String,
       required: true,
     },
-    description: {
-      type: String,
-      required: true,
-    },
-    isPrivate: {
-      type: Boolean,
-      required: true,
+    Rating: {
+      type: Number,
     },
   },
 };
