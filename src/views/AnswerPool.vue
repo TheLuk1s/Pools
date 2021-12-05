@@ -11,7 +11,6 @@
       v-bind="question"
       :key="question"
       v-for="question in questions"
-      @answer="getAnswer"
     />
 
     <!-- Complete button wrapper -->
@@ -45,12 +44,11 @@ export default {
     getAllQuestions() {
       const questions = axios
         .get(
-          "https://polls.modsol.net/public/api/poll/" +
+          "https://dalykai.herokuapp.com/api/auth/poll/" +
             this.$route.params.pollID +
             "/option"
         )
         .then((response) => {
-          console.log(response);
           if (response.status == 200) {
             this.questions = response.data;
           }
@@ -61,8 +59,21 @@ export default {
       let answers = [];
 
       this.$refs.answers.forEach((element) => {
-        answers.push(element.getAnswer());
+        if (typeof element.getAnswer() != "undefined") {
+          answers.push(element.getAnswer());
+        }
       });
+
+      axios
+        .post(
+          "https://dalykai.herokuapp.com/api/auth/poll/" +
+            this.$route.params.pollID +
+            "/answer",
+          {}
+        )
+        .then((response) => {
+          console.log(response);
+        });
     },
   },
 };

@@ -7,7 +7,7 @@
 
     <!-- Questions wrapper -->
     <QuestionLine
-      ref="myTestField"
+      ref="questions"
       :key="question"
       v-for="question in questions"
     />
@@ -46,7 +46,15 @@ export default {
   },
   methods: {
     savePoll() {
-      console.log(this.questions);
+      let questions = [];
+
+      this.$refs.questions.forEach((element) => {
+        if (typeof element.getQuestion() != "undefined") {
+          questions.push(element.getQuestion());
+        }
+      });
+
+      console.log(questions);
     },
   },
 };

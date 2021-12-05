@@ -19,6 +19,8 @@
               : parseFloat(0).toFixed(2)
           "
           :IsPublic="pool.IsPublic"
+          :UserRole="role"
+          @removePoll="removePoll"
         />
       </b-col>
     </b-row>
@@ -42,17 +44,21 @@ export default {
 
     return {
       pools: null,
+      role: localStorage.role,
     };
   },
   methods: {
     getAllPools() {
       const pools = axios
-        .get("https://polls.modsol.net/public/api/poll")
+        .get("https://dalykai.herokuapp.com/api/auth/poll")
         .then((response) => {
           if (response.status == 200) {
             this.pools = response.data;
           }
         });
+    },
+    removePoll(ID) {
+      this.pools = this.pools.filter((element) => element.ID !== ID);
     },
   },
 };

@@ -13,17 +13,27 @@
         <b-form-rating v-model="Rating" readonly></b-form-rating>
       </b-card-text>
 
-      <b-button
-        :disabled="IsPublic != 1"
-        :href="'#/answerPool/' + ID"
-        variant="primary"
-        >Pildyti</b-button
-      >
+      <div class="buttonWrapper">
+        <b-button
+          :disabled="IsPublic != 1 && !Token"
+          :href="'#/answerPool/' + ID"
+          variant="primary"
+          >Pildyti</b-button
+        >
+
+        <b-button v-if="UserRole == 2" v-on:click="removePoll" variant="danger">
+          <b-icon icon="trash-fill"></b-icon>
+        </b-button>
+      </div>
     </b-card>
   </div>
 </template>
 
 <script>
+// Essentials
+import axios from "axios";
+
+// Defaults
 export default {
   name: "PoolCard",
   props: {
@@ -41,9 +51,37 @@ export default {
     Rating: {
       type: Number,
     },
+    UserRole: {
+      type: Number,
+    },
+  },
+  data() {
+    return {
+      Token: localStorage.token ? true : false,
+    };
+  },
+  methods: {
+    removePoll() {
+      axios
+        .delete("https://dalykai.herokuapp.com/api/auth/poll/" + this.ID, {
+          headers: {
+            Authorization: "Bearer " + localStorage.token,
+          },
+        })
+        .then((response) => {
+          this.$emit("removePoll", this.ID);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
+.buttonWrapper {
+  display: flex;
+  justify-content: space-between;
+}
 </style>

@@ -10,7 +10,7 @@
     </b-row>
     <b-row class="mb-3" v-if="InputType === 4">
       <!-- Yes / No Radio as buttons -->
-      <b-col v-bind:class="{ active: invalidAnswer }" class="pl-1 label">{{
+      <b-col v-bind:class="{ active: invalidAnswer } + ' pl-1 label'">{{
         Name
       }}</b-col>
       <b-col class="pr-0 d-flex justify-content-right">
@@ -60,9 +60,11 @@ export default {
     getAnswer() {
       if (this.inputValue == "") {
         this.invalidAnswer = false;
+        return false;
+      } else {
+        this.invalidAnswer = null;
+        return [this.ID, this.inputValue];
       }
-
-      return [this.ID, this.inputValue];
     },
   },
 };

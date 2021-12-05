@@ -8,12 +8,19 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item href="#/">Visi klausimynai</b-nav-item>
-          <b-nav-item href="#/createPool">Kurti klausimyną</b-nav-item>
+          <b-nav-item v-if="loggedIn" href="#/createPool"
+            >Kurti klausimyną</b-nav-item
+          >
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item v-b-modal="'modalLogin'" href="#">Prisijungti</b-nav-item>
-          <b-nav-item v-b-modal="'modalRegister'" href="#"
+          <b-nav-item v-if="!loggedIn" v-b-modal="'modalLogin'" href="#"
+            >Prisijungti</b-nav-item
+          >
+          <b-nav-item v-if="!loggedIn" v-b-modal="'modalRegister'" href="#"
             >Registruotis</b-nav-item
+          >
+          <b-nav-item v-if="loggedIn" v-on:click="logout" href="#"
+            >Atsijungti</b-nav-item
           >
         </b-navbar-nav>
       </b-collapse>
@@ -28,6 +35,29 @@ export default {
     name: {
       type: String,
       required: true,
+    },
+  },
+  data() {
+    return {
+      loggedIn: this.initializeLoggedInCheck(),
+    };
+  },
+  methods: {
+    logout() {
+      delete localStorage.token;
+      delete localStorage.name;
+      delete localStorage.role;
+
+      this.loggedIn = false;
+    },
+    initializeLoggedInCheck() {
+      const token = localStorage.token;
+
+      if (typeof token != "undefined") {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
