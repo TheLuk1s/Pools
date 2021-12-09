@@ -1,7 +1,9 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand href="#/">{{ name }}</b-navbar-brand>
+    <b-navbar toggleable="lg" type="dark" class="custom">
+      <b-navbar-brand href="#/">
+        <b-img :src="logo" class="logo" fluid></b-img>
+      </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -19,9 +21,17 @@
           <b-nav-item v-if="!loggedIn" v-b-modal="'modalRegister'" href="#"
             >Registruotis</b-nav-item
           >
-          <b-nav-item v-if="loggedIn" v-on:click="logout" href="#"
-            >Atsijungti</b-nav-item
+          <b-nav-item
+            v-if="loggedIn"
+            class="icon-logout"
+            v-on:click="logout"
+            href="#"
           >
+            <span class="d-lg-none"> Atsijungti </span>
+            <span class="d-none d-lg-block">
+              <b-icon icon="door-open" aria-hidden="true"></b-icon>
+            </span>
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -40,6 +50,7 @@ export default {
   data() {
     return {
       loggedIn: this.initializeLoggedInCheck(),
+      logo: require("../assets/logo.svg"),
     };
   },
   methods: {
@@ -64,4 +75,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.navbar-brand {
+  max-width: 150px;
+  .logo {
+    filter: invert(100%);
+  }
+}
+
+.custom {
+  background-color: #334257;
+}
+
+.icon-logout {
+  &:hover {
+    animation: wobble;
+    animation-duration: 0.3s;
+  }
+}
 </style>

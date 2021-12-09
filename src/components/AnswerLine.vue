@@ -10,12 +10,19 @@
     </b-row>
     <b-row class="mb-3" v-if="InputType === 4">
       <!-- Yes / No Radio as buttons -->
-      <b-col v-bind:class="{ active: invalidAnswer } + ' pl-1 label'">{{
-        Name
-      }}</b-col>
+      <b-col
+        :class="invalidAnswer === false ? 'label-invalid' : ''"
+        class="pl-1 label"
+      >
+        <span>{{ Name }}</span>
+      </b-col>
       <b-col class="pr-0 d-flex justify-content-right">
         <b-form-group>
-          <b-form-radio-group v-model="inputValue" buttons>
+          <b-form-radio-group
+            v-model="inputValue"
+            button-variant="outline-primary"
+            buttons
+          >
             <b-form-radio value="yes">Taip</b-form-radio>
             <b-form-radio value="no">Ne</b-form-radio>
           </b-form-radio-group>
@@ -77,5 +84,13 @@ export default {
 
 .justify-content-right {
   justify-content: right;
+}
+
+.label-invalid {
+  span {
+    padding-bottom: 2px;
+    color: red;
+    border-bottom: 1px solid red;
+  }
 }
 </style>

@@ -10,7 +10,11 @@
       class="mb-2"
     >
       <b-card-text>
-        <b-form-rating v-model="Rating" readonly></b-form-rating>
+        <b-form-rating
+          class="rating-outline-none"
+          v-model="Rating"
+          readonly
+        ></b-form-rating>
       </b-card-text>
 
       <div class="buttonWrapper">
@@ -21,7 +25,11 @@
           >Pildyti</b-button
         >
 
-        <b-button v-if="UserRole == 2" v-on:click="removePoll" variant="danger">
+        <b-button
+          v-if="UserRole == 2"
+          v-on:click="removePoll"
+          variant="secondary"
+        >
           <b-icon icon="trash-fill"></b-icon>
         </b-button>
       </div>
@@ -83,5 +91,11 @@ export default {
 .buttonWrapper {
   display: flex;
   justify-content: space-between;
+}
+.rating-outline-none {
+  &:focus {
+    border-color: #CED4DA;
+    box-shadow: none;
+  }
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <b-row class="mb-3">
-    <b-col cols="12" md="6">
+    <b-col class="my-1" cols="12" md="6">
       <b-form-input v-model="question" placeholder="Klausimas"></b-form-input>
     </b-col>
-    <b-col cols="12" md="6">
+    <b-col class="my-1" cols="12" md="6">
       <b-form-select v-model="questionType">
         <b-form-select-option value="1">Tekstas</b-form-select-option>
         <b-form-select-option value="4">Taip / Ne</b-form-select-option>

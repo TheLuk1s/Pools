@@ -65,7 +65,8 @@ export default {
           localStorage.role = response.data.user.role;
 
           window.location.reload();
-        });
+        })
+        .catch((error) => {});
     },
     isInvalid(element) {
       if (!this[element] && this.invalidFields > 0) {

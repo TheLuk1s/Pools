@@ -3,12 +3,12 @@
     <b-form class="d-flex justify-content-between" inline>
       <b-form-input
         v-model="name"
-        class="my-3 pr-4"
+        class="my-3 pr-inputs-inline"
         placeholder="Vardas"
       ></b-form-input>
       <b-form-input
         v-model="surname"
-        class="my-3 pr-5"
+        class="my-3 pr-inputs-inline"
         placeholder="Pavardė"
       ></b-form-input>
     </b-form>
@@ -29,6 +29,7 @@
       ></b-form-input>
 
       <b-button
+        :disabled="successful"
         v-on:click="register"
         squared
         variant="outline-secondary float-right"
@@ -55,6 +56,7 @@ export default {
 
       triesToRegister: 0,
       invalidFields: 0,
+      successful: false,
     };
   },
   methods: {
@@ -73,16 +75,32 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
+          this.successful = true;
+          this.$bvToast.toast(
+            "Registracija įvyko sėkmingai. Galite prisijungti.",
+            {
+              solid: true,
+              title: "Pavyko!",
+              variant: "success",
+              toaster: "b-toaster-bottom-right",
+            }
+          );
+        })
+        .catch((error) => {
+          this.$bvToast.toast("Registracija nepavyko.", {
+            solid: true,
+            title: "Klaida!",
+            variant: "danger",
+            toaster: "b-toaster-bottom-right",
+          });
         });
-      // console.log(this.name);
-      // console.log(this.surname);
-      // console.log(this.email);
-      // console.log(this.password);
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
+.pr-inputs-inline {
+  padding-right: 2.6rem !important;
+}
 </style>

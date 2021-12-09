@@ -3,7 +3,7 @@
 import Vue from "vue";
 import App from "./App";
 import Router from "vue-router";
-import Cors from "cors";
+import "animate.css";
 
 // Bootstrap
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";

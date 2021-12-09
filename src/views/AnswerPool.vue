@@ -14,7 +14,11 @@
     />
 
     <!-- Complete button wrapper -->
-    <b-button v-on:click="fillAnswers" pill class="completeButton"
+    <b-button
+      v-on:click="fillAnswers"
+      :disabled="submited"
+      pill
+      class="completeButton"
       ><b-icon icon="check" scale="2" aria-hidden="true"></b-icon
     ></b-button>
   </b-container>
@@ -38,6 +42,7 @@ export default {
 
     return {
       questions: null,
+      submited: false,
     };
   },
   methods: {
@@ -57,23 +62,55 @@ export default {
 
     fillAnswers() {
       let answers = [];
+      let pollData = new FormData();
 
       this.$refs.answers.forEach((element) => {
-        if (typeof element.getAnswer() != "undefined") {
+        if (typeof element.getAnswer() != "undefined" && element.getAnswer()) {
           answers.push(element.getAnswer());
         }
       });
 
-      axios
-        .post(
-          "https://dalykai.herokuapp.com/api/auth/poll/" +
-            this.$route.params.pollID +
-            "/answer",
-          {}
-        )
-        .then((response) => {
-          console.log(response);
+      if (answers.length == this.questions.length) {
+        pollData.append("Answers", JSON.stringify(answers));
+        this.submited = true;
+
+        axios
+          .post(
+            "https://dalykai.herokuapp.com/api/auth/poll/" +
+              this.$route.params.pollID +
+              "/answer",
+            pollData
+          )
+          .then((response) => {
+            this.$bvToast.toast(
+              "Klausimynas atsakytas, dabar galite grįžti į pagrindinį puslapį.",
+              {
+                solid: true,
+                title: "Pavyko!",
+                variant: "success",
+                toaster: "b-toaster-bottom-right",
+              }
+            );
+          })
+          .catch((error) => {
+            this.$bvToast.toast(
+              "Įvyko sisteminė klaida, prašome kreiptis į administraciją.",
+              {
+                solid: true,
+                title: "Klaida!",
+                variant: "danger",
+                toaster: "b-toaster-bottom-right",
+              }
+            );
+          });
+      } else {
+        this.$bvToast.toast("Prašome užpildyti visus laukus.", {
+          solid: true,
+          title: "Klaida!",
+          variant: "danger",
+          toaster: "b-toaster-bottom-right",
         });
+      }
     },
   },
 };

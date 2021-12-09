@@ -2,7 +2,9 @@
   <!-- Pools -->
   <b-container class="mt-5">
     <b-row align-h="center">
+      <h1 v-if="pools == null">Šiuo metu nėra nei vieno klausimyno!</h1>
       <b-col
+        v-else
         v-for="pool in pools"
         :key="pool.ID"
         class="mx-auto"
@@ -11,6 +13,7 @@
         lg="4"
       >
         <PoolCard
+          class="d-flex justify-content-center"
           :ID="pool.ID"
           :Name="pool.Name"
           :Rating="
@@ -55,7 +58,8 @@ export default {
           if (response.status == 200) {
             this.pools = response.data;
           }
-        });
+        })
+        .catch((error) => {});
     },
     removePoll(ID) {
       this.pools = this.pools.filter((element) => element.ID !== ID);
@@ -64,5 +68,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
+.justify-content-center {
+  justify-content: center;
+}
 </style>
